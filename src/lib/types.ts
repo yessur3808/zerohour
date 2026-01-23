@@ -7,6 +7,11 @@
    - studio metadata
    - cover as URL or base64 (optional)
    - popularity sorting fields
+   - (NEW) deterministic "remove released items" support:
+     - explicit released date (required)
+     - optional asOf in the doc
+     - optional region/platform qualifiers per release record
+     - optional cancelled/delayed statuses
    ========================================================= */
 
 /* -------------------------
@@ -18,6 +23,12 @@ export type ISODateTime = string; // e.g. "2026-01-20T00:00:00Z"
 
 export type DatePrecision = "day" | "month" | "quarter" | "year";
 export type ReleaseConfidence = "confirmed" | "likely" | "rumor" | "unknown";
+
+/** Optional: release geography granularity */
+export type Region = "global" | "us" | "eu" | "jp" | "au" | "other";
+
+/** When you need "as-of" time for filtering */
+export type AsOf = ISODateTime;
 
 /* -------------------------
    Platforms
@@ -187,7 +198,7 @@ export type SeasonDetails = {
 };
 
 /* -------------------------
-   Release (expanded from your original)
+   Release (expanded)
    ------------------------- */
 
 export type ReleaseBase = {
@@ -201,6 +212,20 @@ export type ReleaseBase = {
 
   /** Optional: last update timestamp for this release object */
   updatedAt?: ISODateTime;
+
+  /**
+   * Optional: sources that specifically support THIS release record.
+   * (Useful if Game.sources includes lots of unrelated refs like trailers, studio pages, etc.)
+   */
+  sources?: Source[];
+
+  /**
+   * Optional qualifiers:
+   * - region: if the date/window applies only to a geography
+   * - platforms: if this date/window applies only to certain platforms
+   */
+  region?: Region;
+  platforms?: Platform[];
 };
 
 export type ReleaseTBA = ReleaseBase & {
@@ -210,7 +235,11 @@ export type ReleaseTBA = ReleaseBase & {
 export type ReleaseAnnouncedDate = ReleaseBase & {
   status: "announced_date";
   dateISO: ISODate; // "YYYY-MM-DD"
-  datePrecision: Exclude<DatePrecision, "quarter"> | "quarter"; // allow quarter if you want
+  /**
+   * If omitted, consumers can treat it as "day" for strict dates.
+   * Keep it optional to reduce data entry burden.
+   */
+  datePrecision?: DatePrecision;
 };
 
 export type ReleaseAnnouncedWindow = ReleaseBase & {
@@ -235,10 +264,33 @@ export type ReleaseRecurringWeekly = ReleaseBase & {
   timeUTC: string; // "HH:MM" (UTC)
 };
 
+/**
+ * KEY CHANGE:
+ * If status is "released", require a dateISO so you can reliably filter released items.
+ */
 export type ReleaseReleased = ReleaseBase & {
   status: "released";
-  /** Optional: actual release date if you want to keep historical records */
+  /** Actual release date (required for deterministic filtering) */
+  dateISO: ISODate;
+  /** Optional: exact timestamp if known */
+  releasedAt?: ISODateTime;
+};
+
+/** Optional but useful in real-world datasets */
+export type ReleaseCancelled = ReleaseBase & {
+  status: "cancelled";
+  /** Optional: when it was cancelled (YYYY-MM-DD) */
   dateISO?: ISODate;
+  reason?: string;
+};
+
+export type ReleaseDelayed = ReleaseBase & {
+  status: "delayed";
+  previous?: {
+    dateISO?: ISODate;
+    windowLabel?: string;
+  };
+  note?: string;
 };
 
 export type GameRelease =
@@ -247,7 +299,9 @@ export type GameRelease =
   | ReleaseAnnouncedWindow
   | ReleaseRecurringDaily
   | ReleaseRecurringWeekly
-  | ReleaseReleased;
+  | ReleaseReleased
+  | ReleaseCancelled
+  | ReleaseDelayed;
 
 export type ReleaseStatus = GameRelease["status"];
 
@@ -261,6 +315,12 @@ export type PopularityTier =
   | "popular"
   | "niche"
   | "unknown_or_rumor";
+
+/**
+ * Optional: single-field classification to simplify filtering in clients.
+ * You can compute this from release.status in your pipeline.
+ */
+export type Availability = "upcoming" | "released" | "cancelled" | "unknown";
 
 /* -------------------------
    Main Game item
@@ -300,7 +360,13 @@ export type Game = {
   /** Release details */
   release: GameRelease;
 
-  /** Attribution */
+  /**
+   * Optional: computed helper for clients.
+   * If present, should match release.status semantics.
+   */
+  availability?: Availability;
+
+  /** Attribution (general) */
   sources: Source[];
 
   /** Studio metadata */
@@ -316,7 +382,15 @@ export type Game = {
 };
 
 export type GamesDoc = {
+  /** When this document was generated */
   generatedAt: ISODateTime;
+
+  /**
+   * Optional: moment you consider "released vs upcoming" for filtering.
+   * Usually same as generatedAt, but explicitly storing it makes behavior deterministic.
+   */
+  asOf?: AsOf;
+
   schemaVersion: string;
   games: Game[];
 };

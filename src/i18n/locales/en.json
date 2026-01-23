@@ -14,7 +14,46 @@
       "no_games_found": "No games found in games.json."
     },
     "games": {},
-    "game": {}
+    "game": {
+      "game_not_found": "Game not found.",
+      "all_games": "All games",
+      "failed_load": "Failed to load games.",
+      "release": "Release:",
+      "resets_daily": "Daily reset",
+      "tba": "TBA",
+      "time_until_release": "Time until release",
+      "next_reset": "Next reset",
+      "release_date": "Release Date",
+      "day_precision_date": "Date: {{date}} (day precision)",
+      "tip": "Tip: Add a cover by setting <code>coverUrl</code> for this game in your data.",
+      "last_gen_date": "Date last generated: {{date}}",
+
+  "unknown": "Unknown",
+  "platforms": "Platforms",
+  "platforms_unknown": "Unknown",
+  "studio": "Studio",
+  "website": "Website",
+
+  "official": "Official",
+  "unofficial": "Unofficial",
+  "confidence": "Confidence",
+
+  "released": "Released",
+  "released_on": "Released on {{date}}",
+  "cancelled": "Cancelled",
+  "delayed": "Delayed",
+
+  "no_cover": "No cover available",
+  "no_countdown": "No countdown available for this item.",
+
+  "trailers": "Trailers",
+  "trailer": "Trailer",
+
+  "sources": "Sources",
+  "open": "Open",
+  "more_sources": "+{{count}} more"
+
+    }
   },
   "common": {
     "loading": "Loading…",

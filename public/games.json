@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-01-20T00:00:00Z",
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "1.2.0",
   "games": [
     {
       "id": "gta-vi",
@@ -15,7 +15,22 @@
         "confidence": "likely"
       },
       "studio": { "name": "Rockstar Games", "type": "developer_publisher", "location": null },
-      "game": { "title": "Grand Theft Auto VI", "platforms": ["ps5", "xbox_series", "pc"] },
+      "game": {
+        "title": "Grand Theft Auto VI",
+        "platforms": ["ps5", "xbox_series", "pc"],
+        "genres": { "primary": "action_adventure", "secondary": ["open_world"] },
+        "modes": {
+          "singleplayer": "unknown",
+          "multiplayer": "unknown",
+          "coop": { "supported": "unknown", "type": "unknown", "maxPlayers": null },
+          "pvp": { "supported": "unknown", "type": "unknown" },
+          "splitScreen": "unknown"
+        },
+        "connectivity": { "offlinePlayable": "unknown", "onlineRequired": "unknown", "notes": null },
+        "camera": ["third_person"],
+        "liveService": { "enabled": false, "cadence": null },
+        "ageRating": { "system": "esrb", "rating": null, "isFinal": false }
+      },
       "sources": [
         {
           "type": "other",
@@ -57,7 +72,22 @@
         "confidence": "confirmed"
       },
       "studio": { "name": "IO Interactive", "type": "developer_publisher", "location": null },
-      "game": { "title": "007 First Light", "platforms": ["pc", "ps5", "xbox_series", "other"] },
+      "game": {
+        "title": "007 First Light",
+        "platforms": ["pc", "ps5", "xbox_series", "other"],
+        "genres": { "primary": "action_adventure", "secondary": ["stealth"] },
+        "modes": {
+          "singleplayer": "unknown",
+          "multiplayer": "unknown",
+          "coop": { "supported": "unknown", "type": "unknown", "maxPlayers": null },
+          "pvp": { "supported": "unknown", "type": "unknown" },
+          "splitScreen": "unknown"
+        },
+        "connectivity": { "offlinePlayable": "unknown", "onlineRequired": "unknown", "notes": null },
+        "camera": ["third_person"],
+        "liveService": { "enabled": false, "cadence": null },
+        "ageRating": { "system": "esrb", "rating": null, "isFinal": false }
+      },
       "sources": [
         {
           "type": "press_release",
@@ -86,43 +116,6 @@
     },
 
     {
-      "id": "pokemon-legends-za",
-      "name": "Pokémon Legends: Z‑A (Switch 2 Edition)",
-      "popularityTier": "blockbuster",
-      "popularityRank": 3,
-      "category": { "type": "full_game", "franchise": "Pokémon" },
-      "release": {
-        "status": "announced_date",
-        "dateISO": "2025-10-16",
-        "datePrecision": "day",
-        "isOfficial": false,
-        "confidence": "likely"
-      },
-      "studio": { "name": "Game Freak", "type": "developer", "location": null },
-      "game": { "title": "Pokémon Legends: Z‑A", "platforms": ["switch", "other"] },
-      "sources": [
-        {
-          "type": "gaming_news",
-          "isOfficial": false,
-          "name": "Nintendo Life",
-          "url": "https://www.nintendolife.com/news/2025/10/pokemon-legends-z-a-gets-a-6-minute-overview-trailer-for-switch-2",
-          "retrievedAt": "2026-01-20T00:00:00Z",
-          "claim": "Reports a Switch 2 overview trailer and states a specific launch date."
-        }
-      ],
-      "media": {
-        "trailers": [
-          {
-            "label": "Overview trailer (link in source article)",
-            "platform": "youtube",
-            "url": "https://www.nintendolife.com/news/2025/10/pokemon-legends-z-a-gets-a-6-minute-overview-trailer-for-switch-2"
-          }
-        ]
-      },
-      "tags": ["full_game", "nintendo"]
-    },
-
-    {
       "id": "cyberpunk-sequel",
       "name": "Cyberpunk (Sequel) — a.k.a. 'Cyberpunk 2' / Project Orion",
       "popularityTier": "popular",
@@ -130,7 +123,22 @@
       "category": { "type": "full_game", "franchise": "Cyberpunk" },
       "release": { "status": "tba", "isOfficial": false, "confidence": "likely" },
       "studio": { "name": "CD PROJEKT RED", "type": "developer", "location": null },
-      "game": { "title": "Cyberpunk (Sequel)", "platforms": ["pc", "ps5", "xbox_series"] },
+      "game": {
+        "title": "Cyberpunk (Sequel)",
+        "platforms": ["pc", "ps5", "xbox_series"],
+        "genres": { "primary": "rpg", "secondary": ["action_adventure", "shooter"] },
+        "modes": {
+          "singleplayer": "unknown",
+          "multiplayer": "unknown",
+          "coop": { "supported": "unknown", "type": "unknown", "maxPlayers": null },
+          "pvp": { "supported": "unknown", "type": "unknown" },
+          "splitScreen": "unknown"
+        },
+        "connectivity": { "offlinePlayable": "unknown", "onlineRequired": "unknown", "notes": null },
+        "camera": ["first_person"],
+        "liveService": { "enabled": false, "cadence": null },
+        "ageRating": { "system": "esrb", "rating": null, "isFinal": false }
+      },
       "sources": [
         {
           "type": "gaming_news",
@@ -166,7 +174,22 @@
         "location": null,
         "parentCompany": "Bethesda Softworks"
       },
-      "game": { "title": "Fallout 5", "platforms": ["pc", "xbox_series", "ps5"] },
+      "game": {
+        "title": "Fallout 5",
+        "platforms": ["pc", "xbox_series", "ps5"],
+        "genres": { "primary": "rpg", "secondary": ["action_adventure", "open_world"] },
+        "modes": {
+          "singleplayer": "unknown",
+          "multiplayer": "unknown",
+          "coop": { "supported": "unknown", "type": "unknown", "maxPlayers": null },
+          "pvp": { "supported": "unknown", "type": "unknown" },
+          "splitScreen": "unknown"
+        },
+        "connectivity": { "offlinePlayable": "unknown", "onlineRequired": "unknown", "notes": null },
+        "camera": ["first_person", "third_person"],
+        "liveService": { "enabled": false, "cadence": null },
+        "ageRating": { "system": "esrb", "rating": null, "isFinal": false }
+      },
       "sources": [
         {
           "type": "gaming_news",
@@ -193,7 +216,22 @@
         "type": "developer_publisher",
         "location": { "city": "Cary", "region": "North Carolina", "country": "US", "hq": true }
       },
-      "game": { "title": "Fortnite", "platforms": ["pc", "ps5", "ps4", "xbox_series", "xbox_one", "switch", "ios", "android"] },
+      "game": {
+        "title": "Fortnite",
+        "platforms": ["pc", "ps5", "ps4", "xbox_series", "xbox_one", "switch", "ios", "android"],
+        "genres": { "primary": "shooter", "secondary": ["battle_royale"] },
+        "modes": {
+          "singleplayer": false,
+          "multiplayer": true,
+          "coop": { "supported": "unknown", "type": "online", "maxPlayers": null },
+          "pvp": { "supported": true, "type": "online" },
+          "splitScreen": "unknown"
+        },
+        "connectivity": { "offlinePlayable": false, "onlineRequired": true, "notes": null },
+        "camera": ["third_person"],
+        "liveService": { "enabled": true, "cadence": "seasonal" },
+        "ageRating": { "system": "esrb", "rating": "T", "isFinal": true }
+      },
       "season": { "name": null, "number": null, "chapter": null, "battlePass": true },
       "sources": [],
       "media": { "trailers": [] },
@@ -208,7 +246,22 @@
       "category": { "type": "season", "franchise": "Overwatch" },
       "release": { "status": "tba", "isOfficial": false, "confidence": "unknown" },
       "studio": { "name": "Blizzard Entertainment", "type": "developer_publisher", "location": null },
-      "game": { "title": "Overwatch 2", "platforms": ["pc", "ps5", "ps4", "xbox_series", "xbox_one", "switch"] },
+      "game": {
+        "title": "Overwatch 2",
+        "platforms": ["pc", "ps5", "ps4", "xbox_series", "xbox_one", "switch"],
+        "genres": { "primary": "hero_shooter", "secondary": ["shooter"] },
+        "modes": {
+          "singleplayer": false,
+          "multiplayer": true,
+          "coop": { "supported": "unknown", "type": "online", "maxPlayers": null },
+          "pvp": { "supported": true, "type": "online" },
+          "splitScreen": false
+        },
+        "connectivity": { "offlinePlayable": false, "onlineRequired": true, "notes": null },
+        "camera": ["first_person"],
+        "liveService": { "enabled": true, "cadence": "seasonal" },
+        "ageRating": { "system": "esrb", "rating": "T", "isFinal": true }
+      },
       "season": { "name": null, "number": null, "battlePass": true },
       "sources": [],
       "media": { "trailers": [] },
@@ -223,7 +276,22 @@
       "category": { "type": "season", "franchise": "Apex Legends" },
       "release": { "status": "tba", "isOfficial": false, "confidence": "unknown" },
       "studio": { "name": "Respawn Entertainment", "type": "developer", "location": null, "parentCompany": "Electronic Arts" },
-      "game": { "title": "Apex Legends", "platforms": ["pc", "ps5", "ps4", "xbox_series", "xbox_one", "switch"] },
+      "game": {
+        "title": "Apex Legends",
+        "platforms": ["pc", "ps5", "ps4", "xbox_series", "xbox_one", "switch"],
+        "genres": { "primary": "shooter", "secondary": ["battle_royale"] },
+        "modes": {
+          "singleplayer": false,
+          "multiplayer": true,
+          "coop": { "supported": false, "type": null, "maxPlayers": null },
+          "pvp": { "supported": true, "type": "online" },
+          "splitScreen": false
+        },
+        "connectivity": { "offlinePlayable": false, "onlineRequired": true, "notes": null },
+        "camera": ["first_person"],
+        "liveService": { "enabled": true, "cadence": "seasonal" },
+        "ageRating": { "system": "esrb", "rating": "T", "isFinal": true }
+      },
       "season": { "name": null, "number": null, "battlePass": true },
       "sources": [],
       "media": { "trailers": [] },
@@ -238,7 +306,22 @@
       "category": { "type": "season", "franchise": "VALORANT" },
       "release": { "status": "tba", "isOfficial": false, "confidence": "unknown" },
       "studio": { "name": "Riot Games", "type": "developer_publisher", "location": null },
-      "game": { "title": "VALORANT", "platforms": ["pc", "ps5", "xbox_series"] },
+      "game": {
+        "title": "VALORANT",
+        "platforms": ["pc", "ps5", "xbox_series"],
+        "genres": { "primary": "tactical_shooter", "secondary": ["shooter"] },
+        "modes": {
+          "singleplayer": false,
+          "multiplayer": true,
+          "coop": { "supported": false, "type": null, "maxPlayers": null },
+          "pvp": { "supported": true, "type": "online" },
+          "splitScreen": false
+        },
+        "connectivity": { "offlinePlayable": false, "onlineRequired": true, "notes": null },
+        "camera": ["first_person"],
+        "liveService": { "enabled": true, "cadence": "seasonal" },
+        "ageRating": { "system": "esrb", "rating": "T", "isFinal": true }
+      },
       "sources": [],
       "media": { "trailers": [] },
       "tags": ["season", "live_service"]
@@ -252,7 +335,22 @@
       "category": { "type": "update", "franchise": "Warframe" },
       "release": { "status": "tba", "isOfficial": false, "confidence": "unknown" },
       "studio": { "name": "Digital Extremes", "type": "developer_publisher", "location": null },
-      "game": { "title": "Warframe", "platforms": ["pc", "ps5", "ps4", "xbox_series", "xbox_one", "switch", "ios"] },
+      "game": {
+        "title": "Warframe",
+        "platforms": ["pc", "ps5", "ps4", "xbox_series", "xbox_one", "switch", "ios"],
+        "genres": { "primary": "shooter", "secondary": ["action", "arpg"] },
+        "modes": {
+          "singleplayer": true,
+          "multiplayer": true,
+          "coop": { "supported": true, "type": "online", "maxPlayers": 4 },
+          "pvp": { "supported": "unknown", "type": "unknown" },
+          "splitScreen": false
+        },
+        "connectivity": { "offlinePlayable": false, "onlineRequired": true, "notes": null },
+        "camera": ["third_person"],
+        "liveService": { "enabled": true, "cadence": "irregular" },
+        "ageRating": { "system": "esrb", "rating": "M", "isFinal": true }
+      },
       "sources": [],
       "media": { "trailers": [] },
       "tags": ["update", "live_service"]
@@ -266,7 +364,22 @@
       "category": { "type": "season", "franchise": "Dota" },
       "release": { "status": "tba", "isOfficial": false, "confidence": "unknown" },
       "studio": { "name": "Valve", "type": "developer_publisher", "location": null },
-      "game": { "title": "Dota 2", "platforms": ["pc"] },
+      "game": {
+        "title": "Dota 2",
+        "platforms": ["pc"],
+        "genres": { "primary": "moba", "secondary": ["strategy"] },
+        "modes": {
+          "singleplayer": false,
+          "multiplayer": true,
+          "coop": { "supported": false, "type": null, "maxPlayers": null },
+          "pvp": { "supported": true, "type": "online" },
+          "splitScreen": false
+        },
+        "connectivity": { "offlinePlayable": false, "onlineRequired": true, "notes": null },
+        "camera": ["isometric"],
+        "liveService": { "enabled": true, "cadence": "seasonal" },
+        "ageRating": { "system": "esrb", "rating": "T", "isFinal": true }
+      },
       "season": { "name": null },
       "sources": [],
       "media": { "trailers": [] },
@@ -281,7 +394,22 @@
       "category": { "type": "full_game", "franchise": "Pokémon" },
       "release": { "status": "tba", "isOfficial": false, "confidence": "rumor" },
       "studio": { "name": null, "type": "unknown", "location": null },
-      "game": { "title": "Pokémon Pokopia", "platforms": ["switch", "other"] },
+      "game": {
+        "title": "Pokémon Pokopia",
+        "platforms": ["switch", "other"],
+        "genres": { "primary": "unknown", "secondary": [] },
+        "modes": {
+          "singleplayer": "unknown",
+          "multiplayer": "unknown",
+          "coop": { "supported": "unknown", "type": "unknown", "maxPlayers": null },
+          "pvp": { "supported": "unknown", "type": "unknown" },
+          "splitScreen": "unknown"
+        },
+        "connectivity": { "offlinePlayable": "unknown", "onlineRequired": "unknown", "notes": null },
+        "camera": [],
+        "liveService": { "enabled": false, "cadence": null },
+        "ageRating": { "system": "esrb", "rating": null, "isFinal": false }
+      },
       "sources": [],
       "media": { "trailers": [] },
       "tags": ["rumor"]
