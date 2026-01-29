@@ -1,18 +1,13 @@
 import { useState } from "react";
 import {
   Box,
-  Button,
   Chip,
   Collapse,
   Divider,
   Drawer,
-  FormControl,
   IconButton,
   InputAdornment,
-  InputLabel,
-  MenuItem,
   Paper,
-  Select,
   Stack,
   TextField,
   Tooltip,
@@ -27,13 +22,12 @@ import SearchIcon from "@mui/icons-material/Search";
 import TuneIcon from "@mui/icons-material/Tune";
 import ClearIcon from "@mui/icons-material/Clear";
 import CloseIcon from "@mui/icons-material/Close";
-import SortIcon from "@mui/icons-material/Sort";
-import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
+import { FiltersContent } from "./FiltersContent";
 
 export type GamesFiltersState = {
   query: string;
   status: StatusFilter;
-  tag: string; // "all" or tag name
+  tag: string;
   sort: SortKey;
 };
 
@@ -44,7 +38,6 @@ type Props = {
   allTags: string[];
   resultsText: string;
 
-  /** Optional: call when the user hits Enter in search */
   onSubmitSearch?: () => void;
 };
 
@@ -114,107 +107,15 @@ export function GamesToolbar({
     });
   }
 
-  const FiltersContent = (
-    <Stack spacing={1.5} sx={{ pt: 0.5 }}>
-      {/* Status */}
-      <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
-        {(
-          [
-            ["all", t("common.all")],
-            ["announced_date", t("game.filter_release_date")],
-            ["recurring_daily", t("game.filter_daily_reset")],
-            ["tba", t("game.filter_tba")],
-          ] as Array<[StatusFilter, string]>
-        ).map(([k, label]) => (
-          <Chip
-            key={k}
-            label={label}
-            clickable
-            onClick={() => set({ status: k })}
-            color={value.status === k ? "primary" : "default"}
-            variant={value.status === k ? "filled" : "outlined"}
-            sx={{ borderRadius: 999 }}
-          />
-        ))}
-      </Stack>
-
-      <Stack
-        direction={{ xs: "column", sm: "row" }}
-        spacing={1.25}
-        alignItems={{ xs: "stretch", sm: "center" }}
-      >
-        {/* Tag */}
-        {allTags.length > 0 ? (
-          <FormControl size="small" sx={{ minWidth: 220, flex: 1 }}>
-            <InputLabel>
-              <Box
-                sx={{ display: "inline-flex", alignItems: "center", gap: 1 }}
-              >
-                <LocalOfferOutlinedIcon fontSize="small" />
-                {t("common.tag")}
-              </Box>
-            </InputLabel>
-            <Select
-              label={t("common.tag")}
-              value={value.tag}
-              onChange={(e) => set({ tag: String(e.target.value) })}
-            >
-              <MenuItem value="all">{t("common.all_tags")}</MenuItem>
-              {allTags.map((tg) => (
-                <MenuItem key={tg} value={tg}>
-                  {tg}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        ) : null}
-
-        {/* Sort */}
-        <FormControl size="small" sx={{ minWidth: 220, flex: 1 }}>
-          <InputLabel>
-            <Box sx={{ display: "inline-flex", alignItems: "center", gap: 1 }}>
-              <SortIcon fontSize="small" />
-              {t("common.sort_by")}
-            </Box>
-          </InputLabel>
-          <Select
-            label={t("common.sort_by")}
-            value={value.sort}
-            onChange={(e) => set({ sort: e.target.value as SortKey })}
-          >
-            <MenuItem value="az">{t("common.sort_az")}</MenuItem>
-            <MenuItem value="soonest">{t("common.sort_soonest")}</MenuItem>
-            <MenuItem value="latest">{t("common.sort_latest")}</MenuItem>
-            <MenuItem value="daily_first">
-              {t("common.sort_daily_first")}
-            </MenuItem>
-          </Select>
-        </FormControl>
-      </Stack>
-
-      <Stack direction="row" spacing={1} justifyContent="flex-end">
-        <Button
-          variant="outlined"
-          onClick={clearAll}
-          disabled={isDefault(value)}
-          sx={{ borderRadius: 3 }}
-        >
-          {t("common.clear")}
-        </Button>
-      </Stack>
-    </Stack>
-  );
-
   return (
     <>
-      {/* Sticky, compact toolbar */}
       <Paper
         variant="outlined"
         sx={{
           position: "sticky",
-          top: 8,
+          top: 100,
           zIndex: 10,
-          borderRadius: 4,
+          borderRadius: 1,
           px: 1.5,
           py: 1.25,
           backdropFilter: "blur(10px)",
@@ -222,81 +123,161 @@ export function GamesToolbar({
         }}
       >
         <Stack spacing={1}>
-          {/* Row 1: search + buttons + count */}
           <Stack direction="row" spacing={1} alignItems="center">
-            <TextField
-              value={value.query}
-              onChange={(e) => set({ query: e.target.value })}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") onSubmitSearch?.();
-              }}
-              size="small"
-              placeholder={t("common.search_placeholder")}
-              fullWidth
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon fontSize="small" />
-                  </InputAdornment>
-                ),
-                endAdornment: value.query ? (
-                  <InputAdornment position="end">
-                    <Tooltip title={t("common.clear")}>
-                      <IconButton
-                        size="small"
-                        onClick={() => set({ query: "" })}
-                        aria-label={t("common.clear")}
-                      >
-                        <ClearIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                  </InputAdornment>
-                ) : undefined,
-              }}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: 999,
-                },
-              }}
-            />
+            <Box sx={{ flex: 1, minWidth: 0 }}>
+              <TextField
+                value={value.query}
+                onChange={(e) => set({ query: e.target.value })}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") onSubmitSearch?.();
+                }}
+                size="small"
+                placeholder={t("common.search_placeholder")}
+                fullWidth
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon fontSize="small" />
+                    </InputAdornment>
+                  ),
+                  endAdornment: value.query ? (
+                    <InputAdornment position="end">
+                      <Tooltip title={t("common.clear")}>
+                        <IconButton
+                          size="small"
+                          onClick={() => set({ query: "" })}
+                          aria-label={t("common.clear")}
+                          edge="end"
+                          sx={(theme) => ({
+                            color: theme.palette.text.secondary,
+                            "&:hover": { color: theme.palette.text.primary },
+                          })}
+                        >
+                          <ClearIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </InputAdornment>
+                  ) : undefined,
+                }}
+                sx={(theme) => {
+                  const accent = theme.palette.primary.main;
+                  const isDark = theme.palette.mode === "dark";
 
-            {/* Filter toggle (desktop collapse) / drawer (mobile) */}
+                  return {
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: 999,
+                      height: 52,
+                      px: 0.5,
+
+                      "& fieldset": { border: "none" },
+
+                      background: isDark
+                        ? "linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03))"
+                        : "linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.02))",
+
+                      boxShadow: isDark
+                        ? "inset 0 1px 0 rgba(255,255,255,0.08), 0 14px 30px rgba(0,0,0,0.35)"
+                        : "inset 0 1px 0 rgba(255,255,255,0.7), 0 12px 22px rgba(0,0,0,0.10)",
+
+                      outline: isDark
+                        ? "1px solid rgba(255,255,255,0.08)"
+                        : "1px solid rgba(0,0,0,0.06)",
+
+                      transition:
+                        "box-shadow 220ms cubic-bezier(0.16,1,0.3,1), outline-color 220ms cubic-bezier(0.16,1,0.3,1)",
+
+                      "&:hover": {
+                        boxShadow: isDark
+                          ? "inset 0 1px 0 rgba(255,255,255,0.10), 0 18px 40px rgba(0,0,0,0.45)"
+                          : "inset 0 1px 0 rgba(255,255,255,0.75), 0 16px 30px rgba(0,0,0,0.14)",
+                      },
+
+                      "&.Mui-focused": {
+                        outline: `1px solid ${accent}55`,
+                        boxShadow: isDark
+                          ? `inset 0 1px 0 rgba(255,255,255,0.10), 0 18px 44px rgba(0,0,0,0.55), 0 0 0 4px ${accent}22`
+                          : `0 0 0 4px ${accent}22`,
+                      },
+                    },
+
+                    "& .MuiInputBase-input": {
+                      fontWeight: 650,
+                      letterSpacing: "-0.01em",
+                      paddingLeft: 0,
+                    },
+
+                    "& .MuiInputAdornment-positionStart": {
+                      marginLeft: 2,
+                      marginRight: 3,
+                    },
+
+                    "& .MuiInputAdornment-positionEnd": {
+                      marginLeft: 2,
+                      marginRight: 3,
+                    },
+
+                    "& .MuiInputAdornment-root": {
+                      color: theme.palette.text.secondary,
+                    },
+                  };
+                }}
+              />
+            </Box>
+
             <Tooltip title="Filters">
               <IconButton
                 onClick={() => {
                   if (isMobile) setDrawerOpen(true);
                   else setExpanded((v) => !v);
                 }}
-                sx={{
-                  borderRadius: 3,
-                  border: "1px solid",
-                  borderColor: "divider",
-                }}
                 aria-label="Filters"
+                sx={(theme) => {
+                  const accent = theme.palette.primary.main;
+                  const isDark = theme.palette.mode === "dark";
+
+                  return {
+                    width: 52,
+                    height: 52,
+                    borderRadius: 999,
+
+                    background: isDark
+                      ? `linear-gradient(180deg, ${accent}cc, ${accent}99)`
+                      : `linear-gradient(180deg, ${accent}, ${accent}cc)`,
+
+                    color: theme.palette.getContrastText(accent),
+
+                    boxShadow: isDark
+                      ? `0 16px 30px rgba(0,0,0,0.45), 0 10px 22px ${accent}33`
+                      : `0 14px 22px rgba(0,0,0,0.12), 0 10px 18px ${accent}22`,
+
+                    transition:
+                      "transform 180ms cubic-bezier(0.16,1,0.3,1), box-shadow 180ms cubic-bezier(0.16,1,0.3,1)",
+
+                    "&:hover": {
+                      transform: "translate3d(0,-1px,0)",
+                      boxShadow: isDark
+                        ? `0 20px 36px rgba(0,0,0,0.55), 0 12px 26px ${accent}44`
+                        : `0 18px 26px rgba(0,0,0,0.16), 0 12px 22px ${accent}33`,
+                    },
+
+                    "&:active": {
+                      transform: "translate3d(0,0,0) scale(0.98)",
+                    },
+
+                    "&:focus-visible": {
+                      outline: "none",
+                      boxShadow: isDark
+                        ? `0 16px 30px rgba(0,0,0,0.45), 0 10px 22px ${accent}33, 0 0 0 4px ${accent}22`
+                        : `0 14px 22px rgba(0,0,0,0.12), 0 10px 18px ${accent}22, 0 0 0 4px ${accent}22`,
+                    },
+                  };
+                }}
               >
                 <TuneIcon />
               </IconButton>
             </Tooltip>
-
-            {/* Quick clear when anything active */}
-            {!isDefault(value) ? (
-              <Tooltip title={t("common.clear")}>
-                <IconButton
-                  onClick={clearAll}
-                  sx={{
-                    borderRadius: 3,
-                    border: "1px solid",
-                    borderColor: "divider",
-                  }}
-                  aria-label={t("common.clear")}
-                >
-                  <ClearIcon />
-                </IconButton>
-              </Tooltip>
-            ) : null}
           </Stack>
 
-          {/* Row 2: active filter chips + result count */}
           <Stack
             direction={{ xs: "column", sm: "row" }}
             spacing={1}
@@ -310,7 +291,24 @@ export function GamesToolbar({
                   label={c.label}
                   onDelete={c.onDelete}
                   variant="outlined"
-                  sx={{ borderRadius: 999 }}
+                  sx={(theme) => ({
+                    borderRadius: 999,
+                    height: 32,
+                    fontWeight: 650,
+                    letterSpacing: "-0.01em",
+                    bgcolor:
+                      theme.palette.mode === "dark"
+                        ? "rgba(255,255,255,0.03)"
+                        : "rgba(0,0,0,0.02)",
+                    borderColor:
+                      theme.palette.mode === "dark"
+                        ? "rgba(255,255,255,0.12)"
+                        : "rgba(0,0,0,0.12)",
+                    "& .MuiChip-deleteIcon": {
+                      opacity: 0.75,
+                      "&:hover": { opacity: 1 },
+                    },
+                  })}
                 />
               ))}
             </Stack>
@@ -324,17 +322,20 @@ export function GamesToolbar({
             </Typography>
           </Stack>
 
-          {/* Desktop: collapsible filters */}
           {!isMobile ? (
             <Collapse in={expanded} timeout={220} unmountOnExit>
               <Divider sx={{ my: 1 }} />
-              {FiltersContent}
+              <FiltersContent
+                value={value}
+                allTags={allTags}
+                set={set}
+                clearAll={clearAll}
+              />
             </Collapse>
           ) : null}
         </Stack>
       </Paper>
 
-      {/* Mobile: drawer filters */}
       <Drawer
         anchor="bottom"
         open={drawerOpen}
@@ -366,7 +367,12 @@ export function GamesToolbar({
           </Typography>
 
           <Divider />
-          {FiltersContent}
+          <FiltersContent
+            value={value}
+            allTags={allTags}
+            set={set}
+            clearAll={clearAll}
+          />
         </Stack>
       </Drawer>
     </>

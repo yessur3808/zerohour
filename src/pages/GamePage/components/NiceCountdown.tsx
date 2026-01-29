@@ -5,9 +5,14 @@ import { pad2, splitMs } from "../../../utils";
 interface NiceCountdownProps {
   msLeft: number | null;
   compact?: boolean;
+  minimal?: boolean;
 }
 
-export const NiceCountdown = ({ msLeft, compact }: NiceCountdownProps) => {
+export const NiceCountdown = ({
+  msLeft,
+  compact,
+  minimal,
+}: NiceCountdownProps) => {
   if (msLeft === null) {
     return (
       <Stack spacing={0.5}>
@@ -47,7 +52,28 @@ export const NiceCountdown = ({ msLeft, compact }: NiceCountdownProps) => {
       alignItems="flex-start"
       flexWrap="wrap"
     >
-      <CountdownSegment label="Days" value={String(d)} compact={compact} />
+      <CountdownSegment
+        label="Days"
+        value={String(d)}
+        compact={compact}
+        minimal={minimal}
+      />
+      <Typography
+        aria-hidden
+        sx={{
+          mt: compact ? 1.15 : 1.45,
+          color: "text.secondary",
+          fontWeight: 400,
+        }}
+      >
+        :
+      </Typography>
+      <CountdownSegment
+        label="Hours"
+        value={pad2(h)}
+        compact={compact}
+        minimal={minimal}
+      />
       <Typography
         aria-hidden
         sx={{
@@ -58,7 +84,12 @@ export const NiceCountdown = ({ msLeft, compact }: NiceCountdownProps) => {
       >
         :
       </Typography>
-      <CountdownSegment label="Hours" value={pad2(h)} compact={compact} />
+      <CountdownSegment
+        label="Minutes"
+        value={pad2(m)}
+        compact={compact}
+        minimal={minimal}
+      />
       <Typography
         aria-hidden
         sx={{
@@ -69,18 +100,12 @@ export const NiceCountdown = ({ msLeft, compact }: NiceCountdownProps) => {
       >
         :
       </Typography>
-      <CountdownSegment label="Minutes" value={pad2(m)} compact={compact} />
-      <Typography
-        aria-hidden
-        sx={{
-          mt: compact ? 1.15 : 1.45,
-          color: "text.secondary",
-          fontWeight: 800,
-        }}
-      >
-        :
-      </Typography>
-      <CountdownSegment label="Seconds" value={pad2(s)} compact={compact} />
+      <CountdownSegment
+        label="Seconds"
+        value={pad2(s)}
+        compact={compact}
+        minimal={minimal}
+      />
     </Stack>
   );
 };

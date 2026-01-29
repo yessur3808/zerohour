@@ -159,7 +159,8 @@ export const GamePage = () => {
       </Typography>
 
       <FloatingCountdownHUD
-        topOffset={80}
+        minimal
+        topOffset={20}
         visible={showFloatingCountdown && showCountdown}
         msLeft={msLeft}
         label={""}

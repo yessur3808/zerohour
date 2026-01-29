@@ -22,3 +22,54 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+# dotenv environment variable files
+.env
+.env.local
+.env.development
+.env.development.local
+.env.production
+.env.production.local
+/public/env.json
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+
+# Logs
+logs
+*.log
+lerna-debug.log*
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+vite.config.d.ts
+vite.config.js
+
+
+# dependencies
+/node_modules
+/.pnp
+.yarn/cache
+.yarn/local
+.pnp.*
+
+# testing
+/coverage
+
+# IDE
+/.vscode
+/.idea
+
+# vite
+/dist
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem

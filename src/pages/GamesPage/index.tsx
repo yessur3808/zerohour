@@ -8,6 +8,7 @@ import {
   Stack,
   Typography,
   Button,
+  Divider,
 } from "@mui/material";
 import Grid from "@mui/material/GridLegacy";
 import { useTranslation } from "react-i18next";
@@ -38,31 +39,19 @@ export function GamesPage() {
 
   const allTags = useMemo(() => {
     const set = new Set<string>();
-    for (const g of doc?.games ?? [])
+    for (const g of doc?.games ?? []) {
       for (const tg of g.tags ?? []) set.add(tg);
+    }
     return Array.from(set).sort((a, b) => a.localeCompare(b));
   }, [doc]);
 
-  const filteredAndSortedGames = useMemo(() => {
-    const games = doc?.games ?? [];
-    const q = debouncedQuery.trim().toLowerCase();
+  const collator = useMemo(
+    () => new Intl.Collator(undefined, { sensitivity: "base" }),
+    [],
+  );
 
-    const filtered = games.filter((g) => {
-      if (filters.status !== "all" && g.release.status !== filters.status)
-        return false;
-      if (filters.tag !== "all" && !(g.tags ?? []).includes(filters.tag))
-        return false;
-
-      if (!q) return true;
-      const haystack = `${g.name ?? ""} ${(g.tags ?? []).join(
-        " ",
-      )}`.toLowerCase();
-      return haystack.includes(q);
-    });
-
-    const collator = new Intl.Collator(undefined, { sensitivity: "base" });
-
-    return [...filtered].sort((a, b) => {
+  const sortGames = useMemo(() => {
+    return (a: any, b: any) => {
       if (filters.sort === "az") return collator.compare(a.name, b.name);
 
       if (filters.sort === "daily_first") {
@@ -88,8 +77,34 @@ export function GamesPage() {
       // latest
       if (av !== bv) return bv - av;
       return collator.compare(a.name, b.name);
+    };
+  }, [collator, filters.sort, nowMs]);
+
+  const allSortedGames = useMemo(() => {
+    const games = doc?.games ?? [];
+    return [...games].sort(sortGames);
+  }, [doc, sortGames]);
+
+  const filteredAndSortedGames = useMemo(() => {
+    const games = doc?.games ?? [];
+    const q = debouncedQuery.trim().toLowerCase();
+
+    const filtered = games.filter((g) => {
+      if (filters.status !== "all" && g.release.status !== filters.status)
+        return false;
+
+      if (filters.tag !== "all" && !(g.tags ?? []).includes(filters.tag))
+        return false;
+
+      if (!q) return true;
+
+      const haystack =
+        `${g.name ?? ""} ${(g.tags ?? []).join(" ")}`.toLowerCase();
+      return haystack.includes(q);
     });
-  }, [doc, debouncedQuery, filters.status, filters.tag, filters.sort, nowMs]);
+
+    return [...filtered].sort(sortGames);
+  }, [doc, debouncedQuery, filters.status, filters.tag, sortGames]);
 
   if (loading) {
     return (
@@ -100,13 +115,17 @@ export function GamesPage() {
   }
 
   if (error || !doc) {
-    return <Alert severity="error">{error ?? t("common.failed_load")} </Alert>;
+    return <Alert severity="error">{error ?? t("common.failed_load")}</Alert>;
   }
 
   const resultsText = t("common.results_count", {
     shown: filteredAndSortedGames.length,
     total: doc.games.length,
   });
+
+  const noMatches = filteredAndSortedGames.length === 0;
+
+  const gamesToRender = noMatches ? allSortedGames : filteredAndSortedGames;
 
   return (
     <Stack spacing={2}>
@@ -121,9 +140,23 @@ export function GamesPage() {
         resultsText={resultsText}
       />
 
+      {noMatches ? (
+        <Paper variant="outlined" sx={{ p: 2, borderRadius: 3 }}>
+          <Typography color="text.secondary" sx={{ mb: 1 }}>
+            {t("common.no_results")}
+          </Typography>
+          <Divider
+            sx={(theme) => ({
+              my: 1.5,
+              backgroundColor: `${theme.palette.primary.main}44`,
+            })}
+          />
+        </Paper>
+      ) : null}
+
       {/* Results */}
       <Grid container spacing={2}>
-        {filteredAndSortedGames.map((g) => (
+        {gamesToRender.map((g) => (
           <Grid item xs={12} sm={6} key={g.id}>
             <Paper sx={{ p: 2, borderRadius: 3 }}>
               <Stack spacing={1}>
@@ -151,14 +184,6 @@ export function GamesPage() {
           </Grid>
         ))}
       </Grid>
-
-      {filteredAndSortedGames.length === 0 ? (
-        <Paper variant="outlined" sx={{ p: 2, borderRadius: 3 }}>
-          <Typography color="text.secondary">
-            {t("common.no_results")}
-          </Typography>
-        </Paper>
-      ) : null}
     </Stack>
   );
 }

@@ -17,8 +17,9 @@ export const FloatingCountdownHUD = ({
   msLeft,
   label = "",
   onClick,
-  topOffset = 72,
+  topOffset = 0,
   showLabel = true,
+  minimal = false,
 }: {
   visible: boolean;
   msLeft: number | null;
@@ -26,6 +27,7 @@ export const FloatingCountdownHUD = ({
   onClick: () => void;
   topOffset?: number;
   showLabel?: boolean;
+  minimal?: boolean;
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -73,29 +75,29 @@ export const FloatingCountdownHUD = ({
           elevation={0}
           sx={{
             borderRadius: 1,
-            px: 0.5,
-            py: 0.8,
+            px: 3,
+            py: 0.6,
             overflow: "hidden",
-
+            height: "72px",
+            backdropFilter: "blur(16px)",
+            verticalAlign: "middle",
+            alignContent: "center",
             background:
               theme.palette.mode === "dark"
-                ? "rgba(10, 12, 16, 0.20)"
-                : "rgba(255, 255, 255, 0.72)",
-            backdropFilter: "blur(10px)",
+                ? "linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03))"
+                : "linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.55))",
+            border:
+              theme.palette.mode === "dark"
+                ? "1px solid rgba(255,255,255,0.10)"
+                : "1px solid rgba(0,0,0,0.06)",
+            boxShadow:
+              theme.palette.mode === "dark"
+                ? "0 18px 40px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.08)"
+                : "0 16px 40px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.85)",
+
             WebkitBackdropFilter: "blur(10px)",
-            border: "1px solid transparent",
-            backgroundImage: `linear-gradient(${
-              theme.palette.mode === "dark"
-                ? "rgba(10, 12, 16, 0.20)"
-                : "rgba(255, 255, 255, 0.72)"
-            }, ${
-              theme.palette.mode === "dark"
-                ? "rgba(10, 12, 16, 0.20)"
-                : "rgba(255, 255, 255, 0.72)"
-            }), linear-gradient(135deg, ${neon}, rgba(255,255,255,0))`,
             backgroundOrigin: "border-box",
             backgroundClip: "padding-box, border-box",
-            boxShadow: `0 0 0 1px ${halo} inset, 0 6px 18px rgba(0,0,0,0.14), 0 0 10px ${halo}`,
           }}
         >
           <Stack
@@ -137,34 +139,23 @@ export const FloatingCountdownHUD = ({
                   "& .MuiStack-root": { flexWrap: "nowrap" },
                 }}
               >
-                <NiceCountdown msLeft={msLeft} compact />
+                <NiceCountdown msLeft={msLeft} compact minimal />
               </Box>
             </Stack>
-
-            <IconButton
-              size="small"
-              aria-label="Scroll to countdown"
-              onClick={(e) => {
-                e.stopPropagation();
-                onClick();
-              }}
+          </Stack>
+          <Box>
+            <Typography
+              variant="subtitle2"
               sx={{
-                p: 0.15,
-                borderRadius: 999,
-                color: "text.secondary",
-                "& svg": { fontSize: 16 },
-                "&:hover": {
-                  color: "text.primary",
-                  backgroundColor:
-                    theme.palette.mode === "dark"
-                      ? "rgba(255,255,255,0.05)"
-                      : "rgba(0,0,0,0.05)",
-                },
+                textTransform: "uppercase",
+                opacity: 0.6,
+                marginTop: 1,
+                textAlign: "right",
               }}
             >
-              <KeyboardArrowUpIcon />
-            </IconButton>
-          </Stack>
+              Game Name
+            </Typography>
+          </Box>
         </Paper>
       </Box>
     </Fade>
