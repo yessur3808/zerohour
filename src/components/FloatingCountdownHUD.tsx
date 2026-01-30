@@ -3,13 +3,12 @@ import {
   Box,
   Fade,
   Paper,
+  Portal, // ✅ add
   Stack,
   Typography,
   useMediaQuery,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import IconButton from "@mui/material/IconButton";
 import { NiceCountdown } from "../pages/GamePage/components/NiceCountdown";
 
 export const FloatingCountdownHUD = ({
@@ -33,131 +32,129 @@ export const FloatingCountdownHUD = ({
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const canShow = visible && msLeft != null && msLeft > 0;
 
-  // Softer neon (more subtle)
-  const neon =
-    theme.palette.mode === "dark"
-      ? "rgba(120, 255, 214, 0.38)"
-      : "rgba(0, 150, 120, 0.28)";
+  const effectiveShowLabel = Boolean(showLabel && label);
 
-  const halo =
+  const accent =
     theme.palette.mode === "dark"
-      ? "rgba(120, 255, 214, 0.10)"
-      : "rgba(0, 150, 120, 0.08)";
-
-  const effectiveShowLabel = showLabel && !isMobile && label;
+      ? "rgba(120, 255, 214, 0.45)"
+      : "rgba(0, 150, 120, 0.30)";
 
   return (
-    <Fade in={canShow} unmountOnExit>
-      <Box
-        onClick={onClick}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") onClick();
-        }}
-        sx={{
-          position: "fixed",
-          zIndex: theme.zIndex.appBar + 1,
-          cursor: "pointer",
-          outline: "none",
-          top: isMobile
-            ? "auto"
-            : `calc(env(safe-area-inset-top, 0px) + ${topOffset}px)`,
-          right: isMobile ? "auto" : 10,
-          bottom: isMobile
-            ? `calc(env(safe-area-inset-bottom, 0px) + 10px)`
-            : "auto",
-          left: isMobile ? "50%" : "auto",
-          transform: isMobile ? "translateX(-50%)" : "none",
-        }}
-      >
-        <Paper
-          elevation={0}
+    <Portal>
+      {" "}
+      <Fade in={canShow} unmountOnExit>
+        <Box
+          onClick={onClick}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") onClick();
+          }}
           sx={{
-            borderRadius: 1,
-            px: 3,
-            py: 0.6,
-            overflow: "hidden",
-            height: "72px",
-            backdropFilter: "blur(16px)",
-            verticalAlign: "middle",
-            alignContent: "center",
-            background:
-              theme.palette.mode === "dark"
-                ? "linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03))"
-                : "linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.55))",
-            border:
-              theme.palette.mode === "dark"
-                ? "1px solid rgba(255,255,255,0.10)"
-                : "1px solid rgba(0,0,0,0.06)",
-            boxShadow:
-              theme.palette.mode === "dark"
-                ? "0 18px 40px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.08)"
-                : "0 16px 40px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.85)",
+            position: "fixed",
+            zIndex: theme.zIndex.appBar + 2,
+            cursor: "pointer",
+            outline: "none",
 
-            WebkitBackdropFilter: "blur(10px)",
-            backgroundOrigin: "border-box",
-            backgroundClip: "padding-box, border-box",
+            top: `calc(env(safe-area-inset-top, 0px) + ${topOffset}px)`,
+            right: isMobile ? "auto" : 12,
+
+            left: isMobile ? "50%" : "auto",
+            transform: isMobile ? "translateX(-50%)" : "none",
+
+            WebkitTapHighlightColor: "transparent",
           }}
         >
-          <Stack
-            direction="row"
-            spacing={0.6}
-            alignItems="center"
-            sx={{ minWidth: 0 }}
+          <Paper
+            elevation={0}
+            sx={{
+              borderRadius: 999,
+              px: 2.5,
+              py: 0,
+              height: 72,
+              display: "flex",
+              alignItems: "center",
+
+              minWidth: { xs: "min(92vw, 520px)", sm: 360 },
+              maxWidth: { xs: "92vw", sm: 520 },
+
+              backdropFilter: "blur(14px)",
+              WebkitBackdropFilter: "blur(14px)",
+
+              background:
+                theme.palette.mode === "dark"
+                  ? "linear-gradient(180deg, rgba(18,20,24,0.88), rgba(18,20,24,0.72))"
+                  : "linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,255,255,0.72))",
+              backgroundImage: "none",
+
+              border:
+                theme.palette.mode === "dark"
+                  ? "1px solid rgba(255,255,255,0.10)"
+                  : "1px solid rgba(0,0,0,0.08)",
+
+              boxShadow:
+                theme.palette.mode === "dark"
+                  ? `0 18px 50px rgba(0,0,0,0.55), 0 0 0 1px ${accent}`
+                  : `0 18px 50px rgba(0,0,0,0.16), 0 0 0 1px ${accent}`,
+
+              transition:
+                "transform 180ms cubic-bezier(0.16,1,0.3,1), box-shadow 180ms cubic-bezier(0.16,1,0.3,1)",
+              "&:hover": {
+                transform: "translateY(-1px)",
+                boxShadow:
+                  theme.palette.mode === "dark"
+                    ? `0 22px 60px rgba(0,0,0,0.65), 0 0 0 1px ${accent}, 0 0 0 6px rgba(120,255,214,0.08)`
+                    : `0 22px 60px rgba(0,0,0,0.20), 0 0 0 1px ${accent}, 0 0 0 6px rgba(0,150,120,0.10)`,
+              },
+              "&:active": {
+                transform: "translateY(0px) scale(0.99)",
+              },
+            }}
           >
-            <Stack spacing={0} sx={{ minWidth: 0, flex: 1 }}>
-              {effectiveShowLabel ? (
-                <Typography
-                  variant="caption"
+            <Stack
+              direction="row"
+              spacing={1.25}
+              alignItems="center"
+              sx={{ minWidth: 0, width: "100%" }}
+            >
+              <Stack spacing={0.35} sx={{ minWidth: 0, flex: 1 }}>
+                <Box
                   sx={{
-                    opacity: 0.55,
-                    letterSpacing: "0.12em",
-                    textTransform: "uppercase",
-                    lineHeight: 1.0,
-                    fontSize: 9,
+                    minWidth: 0,
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
+                    "& *": {
+                      fontWeight: 850,
+                    },
+                    "& .MuiStack-root": {
+                      flexWrap: "nowrap",
+                    },
+                  }}
+                >
+                  <NiceCountdown msLeft={msLeft} compact minimal={minimal} />
+                </Box>
+              </Stack>
+
+              {effectiveShowLabel ? (
+                <Typography
+                  variant="subtitle2"
+                  sx={{
+                    display: { xs: "none", sm: "block" },
+                    opacity: 0.65,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.08em",
+                    fontSize: 11,
+                    whiteSpace: "nowrap",
                   }}
                 >
                   {label}
                 </Typography>
               ) : null}
-
-              <Box
-                sx={{
-                  lineHeight: 1,
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  "& *": {
-                    fontSize: isMobile ? "0.9rem" : "0.92rem",
-                    fontWeight: 800,
-                    lineHeight: 1.05,
-                  },
-                  "& .MuiStack-root": { flexWrap: "nowrap" },
-                }}
-              >
-                <NiceCountdown msLeft={msLeft} compact minimal />
-              </Box>
             </Stack>
-          </Stack>
-          <Box>
-            <Typography
-              variant="subtitle2"
-              sx={{
-                textTransform: "uppercase",
-                opacity: 0.6,
-                marginTop: 1,
-                textAlign: "right",
-              }}
-            >
-              Game Name
-            </Typography>
-          </Box>
-        </Paper>
-      </Box>
-    </Fade>
+          </Paper>
+        </Box>
+      </Fade>
+    </Portal>
   );
 };

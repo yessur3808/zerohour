@@ -160,14 +160,15 @@ export const GamePage = () => {
 
       <FloatingCountdownHUD
         minimal
-        topOffset={20}
+        topOffset={12}
         visible={showFloatingCountdown && showCountdown}
         msLeft={msLeft}
-        label={""}
+        label={game.name ?? ""}
         onClick={() => {
           countdownAnchorRef.current?.scrollIntoView({
             behavior: "smooth",
-            block: "start",
+            block: "end",
+            inline: "start",
           });
         }}
       />

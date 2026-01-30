@@ -4,18 +4,12 @@ import {
   Container,
   Paper,
   useMediaQuery,
-  BottomNavigation,
-  BottomNavigationAction,
   Stack,
   Typography,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
-import GridViewRoundedIcon from "@mui/icons-material/GridViewRounded";
-import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 import Grid from "@mui/material/GridLegacy";
-
-import { FloatingTopNav } from "./FloatingTopNav";
+import { FloatingNav } from "./FloatingNav";
 
 type NavKey = "home" | "games" | "about";
 
@@ -78,7 +72,7 @@ export function AppShell() {
           }}
         >
           <Container maxWidth="lg">
-            <FloatingTopNav
+            <FloatingNav
               value={value}
               onChange={go}
               // logo={
@@ -172,55 +166,9 @@ export function AppShell() {
         </Paper>
       )}
 
-      {/* Bottom nav for mobile */}
+      {/* Mobile bottom nav (reuse FloatingTopNav) */}
       {isMobile && (
-        <Paper
-          elevation={12}
-          sx={{
-            position: "fixed",
-            left: 12,
-            right: 12,
-            bottom: 12,
-            borderRadius: 3,
-            overflow: "hidden",
-            border: "1px solid",
-            borderColor: "divider",
-            bgcolor: "background.paper",
-            backdropFilter: "blur(12px)",
-          }}
-        >
-          <BottomNavigation
-            showLabels
-            value={value}
-            onChange={(_, next: NavKey) => go(next)}
-            sx={{
-              height: mobileNavHeight,
-              "& .MuiBottomNavigationAction-root": {
-                minWidth: 0,
-                px: 1,
-              },
-              "& .MuiBottomNavigationAction-label": {
-                fontWeight: 800,
-              },
-            }}
-          >
-            <BottomNavigationAction
-              label="Home"
-              value="home"
-              icon={<HomeRoundedIcon />}
-            />
-            <BottomNavigationAction
-              label="All Games"
-              value="games"
-              icon={<GridViewRoundedIcon />}
-            />
-            <BottomNavigationAction
-              label="About"
-              value="about"
-              icon={<InfoRoundedIcon />}
-            />
-          </BottomNavigation>
-        </Paper>
+        <FloatingNav value={value} onChange={go} dock="bottom" offsetPx={12} />
       )}
     </Box>
   );

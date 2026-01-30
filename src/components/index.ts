@@ -1,2 +1,2 @@
 export * from "./AppShell";
-export * from "./FloatingTopNav";
+export * from "./FloatingNav";

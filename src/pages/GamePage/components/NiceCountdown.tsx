@@ -1,6 +1,20 @@
-import { Stack, Typography } from "@mui/material";
+import React from "react";
+import { Stack, styled, Typography } from "@mui/material";
 import { CountdownSegment } from "./CountdownSegment";
 import { pad2, splitMs } from "../../../utils";
+
+type SeparatorProps = {
+  compact?: boolean;
+};
+
+const Separator = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== "compact",
+})<SeparatorProps>(({ compact }) => ({
+  marginTop: compact ? 1.05 : 1.35,
+  color: "text.secondary",
+  fontWeight: 700,
+  opacity: 0.7,
+}));
 
 interface NiceCountdownProps {
   msLeft: number | null;
@@ -58,48 +72,27 @@ export const NiceCountdown = ({
         compact={compact}
         minimal={minimal}
       />
-      <Typography
-        aria-hidden
-        sx={{
-          mt: compact ? 1.15 : 1.45,
-          color: "text.secondary",
-          fontWeight: 400,
-        }}
-      >
+      <Separator aria-hidden compact={compact}>
         :
-      </Typography>
+      </Separator>
       <CountdownSegment
         label="Hours"
         value={pad2(h)}
         compact={compact}
         minimal={minimal}
       />
-      <Typography
-        aria-hidden
-        sx={{
-          mt: compact ? 1.15 : 1.45,
-          color: "text.secondary",
-          fontWeight: 800,
-        }}
-      >
+      <Separator aria-hidden compact={compact}>
         :
-      </Typography>
+      </Separator>
       <CountdownSegment
         label="Minutes"
         value={pad2(m)}
         compact={compact}
         minimal={minimal}
       />
-      <Typography
-        aria-hidden
-        sx={{
-          mt: compact ? 1.15 : 1.45,
-          color: "text.secondary",
-          fontWeight: 800,
-        }}
-      >
+      <Separator aria-hidden compact={compact}>
         :
-      </Typography>
+      </Separator>
       <CountdownSegment
         label="Seconds"
         value={pad2(s)}
